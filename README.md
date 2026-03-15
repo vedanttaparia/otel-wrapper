@@ -12,7 +12,7 @@ This project is separated into clean, modular tiers so that the application logi
 otel-wrapper/
 ├── src/            # Core Python OpenTelemetry Wrapper & CLI
 ├── deploy/         # Application Dockerfile & Swarm Stack (otel-test)
-├── local/          # Observability Infrastructure Swarm Stack (otel-infra)
+├── local/          # (Gitignored) Observability Infrastructure Swarm Stack (otel-infra)
 ├── scripts/        # Automation & Testing scripts
 └── certs/          # (Gitignored) Generated TLS Certificates
 ```
