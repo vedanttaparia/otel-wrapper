@@ -1,0 +1,7 @@
+certs/*
+certs/
+local/*
+local/
+AGENTS.md
+otel-wrapper.code-workspace
+replay.sh

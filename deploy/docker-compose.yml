@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  otel-wrapper:
+    image: otel-wrapper:latest
+    build:
+      context: ../src
+      dockerfile: ../deploy/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - otel-net
+    configs:
+      - source: automation_script
+        target: /config/automation_script.sh
+        mode: 0555
+    entrypoint: ["/bin/bash", "/config/automation_script.sh"]
+
+configs:
+  automation_script:
+    file: ../scripts/automation_script.sh
+
+networks:
+  otel-net:
+    external: true
