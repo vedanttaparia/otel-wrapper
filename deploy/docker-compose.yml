@@ -15,13 +15,13 @@ services:
       - otel-net
     configs:
       - source: automation_script
-        target: /config/automation_script.sh
-        mode: 0555
-    entrypoint: ["/bin/bash", "/config/automation_script.sh"]
+        target: /config/automation_script.py
+        mode: 444
+    entrypoint: [ "python", "/config/automation_script.py" ]
 
 configs:
   automation_script:
-    file: ../scripts/automation_script.sh
+    file: ../scripts/automation_script.py
 
 networks:
   otel-net:

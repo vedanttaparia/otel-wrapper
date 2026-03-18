@@ -10,16 +10,12 @@ WORKDIR /app
 # Ensure latest pip
 RUN pip install --no-cache-dir --upgrade pip
 
-# Install OpenTelemetry dependencies
-RUN pip install --no-cache-dir \
-    opentelemetry-api \
-    opentelemetry-sdk \
-    opentelemetry-exporter-otlp-proto-grpc
+# Copy the package definitions and source folder
+COPY pyproject.toml ./
+COPY src/ ./src/
 
-# Copy our robust, memory-safe library modules
-COPY checker.py .
-COPY otel_lib.py .
-COPY cli.py .
+# Install the application as a native system package
+RUN pip install --no-cache-dir .
 
 # Switch to non-root user
 USER oteluser
