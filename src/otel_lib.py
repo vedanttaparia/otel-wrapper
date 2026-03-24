@@ -33,14 +33,11 @@ class MetricsRegistry:
             self.counters = weakref.WeakValueDictionary()
             self.up_down_counters = weakref.WeakValueDictionary()
             self.histograms = weakref.WeakValueDictionary()
+            self.gauges = weakref.WeakValueDictionary()
             
             self._initialized = True
 
     def init_provider(self, service_name: str = "otel_wrapper", endpoint: str = None):
-        """
-        Initializes the OpenTelemetry MeterProvider with a gRPC OTLP Exporter.
-        Must be called once before emitting metrics.
-        """
         with self._lock:
             if self.meter is not None:
                 return # Already initialized
@@ -102,3 +99,14 @@ class MetricsRegistry:
             self.histograms[name].record(value, attributes=labels)
         except Exception as e:
             logger.error(f"Failed to emit histogram metric '{name}': {e}")
+
+
+    def emit_gauge(self, name: str, value: int | float, labels: dict = None, description: str = ""):
+        try:
+            if name not in self.gauges:
+                instrument = self._get_meter().create_gauge(name=name, description=description)
+                self.gauges[name] = instrument
+                
+            self.gauges[name].set(value, attributes=labels)
+        except Exception as e:
+            logger.error(f"Failed to emit gauge metric '{name}': {e}")
